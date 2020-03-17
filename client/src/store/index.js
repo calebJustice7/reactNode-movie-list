@@ -5,7 +5,8 @@ export const initState = {
     loaded: false,
     results: [],
     lists: [],
-    selectedMovie: {}
+    selectedMovie: {},
+    selectedMovieList: []
 }
 
 const store = createStore(reducer);

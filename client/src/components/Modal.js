@@ -5,14 +5,10 @@ import store from '../store/index';
 export default class Modal extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            inputVal: ''
-        }
+        this.state = {inputVal: '', message: ''}
     }
     inputChange = (e) => {
-        this.setState({
-            inputVal: e.target.value
-        })
+        this.setState({inputVal: e.target.value})
     }
     closeModal() {
         $(".movies-list-page").removeClass('modal-open');
@@ -20,26 +16,29 @@ export default class Modal extends React.Component {
     }  
     newList = () => {
         if(this.state.inputVal.length === 0) {
-            this.setState({
-                inputVal: 'Must Enter A Name'
-            })
+            this.setState({inputVal: 'Must Enter A Name' })
         } else {
             store.dispatch({
                 type: "ADD_LIST",
                 listName: this.state.inputVal
             })
-            this.setState({
-                inputVal: ''
-            })
+            this.setState({inputVal: ''})
         }
     }
     addToList = (item, idx) => {
+        const len = store.getState().lists[idx].movies.length;
         store.dispatch({
             type: "ADD_TO_LIST",
             movie: item,
             index: idx
         })
-        console.log(store.getState().lists);
+        if(len === store.getState().lists[idx].movies.length) {
+            this.setState({message: 'Movie Already exists in list'})
+            setTimeout(() => {this.setState({message: ''})}, 2000)
+        } else {
+            this.setState({message: 'Movie Added To List'})
+            setTimeout(() => {this.setState({message: ''})}, 2000)
+        }
     }
     showLists() {
         if(store.getState().lists.length === 0){
@@ -65,6 +64,7 @@ export default class Modal extends React.Component {
                     <div className="new-list-wrapper">
                         <input placeholder="New List Here" onChange={this.inputChange} value={this.state.inputVal} type="text" className="new-list-input" />
                         <button onClick={this.newList}>Create New List</button>
+                        <div id="message">{this.state.message}</div>
                     </div>
                     <div className="lists">
                         {this.showLists()}

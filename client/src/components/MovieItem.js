@@ -22,7 +22,6 @@ export default class MovieItem extends React.Component {
                 <div className="movie-title">{Title}</div>
                 {Poster}
                 <button onClick={this.addToList} className="movie-btn add-to-list">Add To List</button>
-                <button className="movie-btn additional-info">Additional Info</button>
                 <Modal />
             </div>
         )
